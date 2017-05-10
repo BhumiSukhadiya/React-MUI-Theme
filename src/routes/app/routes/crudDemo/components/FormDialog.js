@@ -1,5 +1,5 @@
-import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import React from "react";
+import RaisedButton from "material-ui/RaisedButton";
 import {
     Dialog,
     TextField,
@@ -11,12 +11,12 @@ import {
     Toggle,
     Checkbox,
     Chip
-} from 'material-ui';
-import {connect} from 'react-redux';
-import {addNewUser, updateUser} from '../../../../../service/user.service';
+} from "material-ui";
+import {connect} from "react-redux";
+import {addNewUser, updateUser} from "../../../../../service/user.service";
 //noinspection JSUnresolvedVariable
-import _ from 'lodash';
-import Alert from 'react-s-alert';
+import _ from "lodash";
+import Alert from "react-s-alert";
 class DataForm extends React.Component {
     constructor(props) {
         super(props);
@@ -25,7 +25,7 @@ class DataForm extends React.Component {
             defaultStatus: !_.isEmpty(props.userData) ? props.userData.status : true,
             dialogType: !_.isEmpty(props.userData) ? 'update' : 'insert',
             imagePreviewUrl: './assets/images/' + props.userData.profile || '',
-            errors:{}
+            errors: {}
         }
     }
 
@@ -40,12 +40,29 @@ class DataForm extends React.Component {
                 technologyArr.push(this.refs[checkboxes[i]].props.value)
             }
         }
-        let err={};
-        if(_.isEmpty(this.refs.name.input.value)){
-            err['name']="Name can't be empty";
+        let err = {};
+        let formValid = true;
+        if (_.isEmpty(this.refs.name.input.value)) {
+            err['name'] = "Name can't be empty!";
+            formValid = false;
         }
-        if(_.isEmpty(this.refs.gender.state.selected)){
-
+        if (_.isEmpty(this.refs.email.input.value)) {
+            err['email'] = "Email can't be empty!";
+            formValid = false;
+        }
+        if (_.isEmpty(technologyArr)) {
+            err['technology'] = "Select at least one technology!";
+            formValid = false;
+        }
+        if (this.state.dialogType == 'insert' && _.isEmpty(this.refs.fileUpload.files)) {
+            err['profile'] = "Select Profile Image!";
+            formValid = false;
+        }
+        if (!formValid) {
+            this.setState({
+                errors: err
+            });
+            return;
         }
 
         fd.append('name', this.refs.name.input.value);
@@ -66,7 +83,7 @@ class DataForm extends React.Component {
                 Alert.success(res, {
                     position: 'top-right',
                     effect: 'flip',
-                    timeout:3000
+                    timeout: 3000
                 });
             });
         } else {
@@ -75,7 +92,7 @@ class DataForm extends React.Component {
                 Alert.success(res, {
                     position: 'top-right',
                     effect: 'flip',
-                    timeout:3000
+                    timeout: 3000
                 });
             });
         }
@@ -83,7 +100,7 @@ class DataForm extends React.Component {
 
     handleChange = (event, index, value) => this.setState({Country_value: value});
     handleToggle = (event, isInputChecked) => {
-        this.setState({defaultStatus: !isInputChecked});
+        this.setState(() => ({defaultStatus: !isInputChecked}));
     };
     handleImageChange = (e) => {
         e.preventDefault();
@@ -129,12 +146,14 @@ class DataForm extends React.Component {
                                 <tr>
                                     <td><label style={{paddingRight: 10}}>Name:</label></td>
                                     <td><TextField hintText='Enter Your Name' type='text' ref='name'
-                                                   defaultValue={userData.name || ''}/></td>
+                                                   defaultValue={userData.name || '' }
+                                                   errorText={this.state.errors.name || ''}/></td>
                                 </tr>
                                 <tr>
                                     <td><label style={{paddingRight: 10}}>Email:</label></td>
                                     <td><TextField hintText='Enter Your Email Id' type='email' ref='email'
-                                                   defaultValue={userData.email || ''}/>
+                                                   defaultValue={userData.email || ''}
+                                                   errorText={this.state.errors.email || ''}/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -184,15 +203,26 @@ class DataForm extends React.Component {
                                         <Checkbox ref='tech3' value='PHP'
                                                   defaultChecked={(!_.isEmpty(userData) && userData.technology.indexOf('PHP') >= 0)}
                                                   label='PHP'/>
+                                        <span className="color-danger" style={{
+                                            fontSize: 12,
+                                            borderTop: '2px solid red',
+                                            paddingTop: 2
+                                        }}>{this.state.errors.technology || ''}</span>
                                     </td>
-                                    <td><span>test</span></td>
                                 </tr>
                                 <tr>
                                     <td><label style={{paddingRight: 10}}>Profile:</label></td>
                                     <td>{!_.isEmpty(userData) &&
                                     <div><img src={this.state.imagePreviewUrl} width={150}
-                                              height={150}/><br/></div>}<input type='file' ref='fileUpload'
-                                                                               onChange={this.handleImageChange}/></td>
+                                              height={150}/><br/></div>}
+                                        <input type='file' ref='fileUpload' onChange={this.handleImageChange}
+                                               style={{marginBottom: 2}}/><br/>
+                                        <span className="color-danger" style={{
+                                            fontSize: 12,
+                                            borderTop: '2px solid red',
+                                            paddingTop: 2
+                                        }}> {this.state.dialogType == 'insert' && this.state.errors.profile || ''}</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><label style={{paddingRight: 10}}>Status:</label></td>
@@ -207,8 +237,8 @@ class DataForm extends React.Component {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <center><input type='submit' value='submit'/></center>
+                                    <td colSpan={2} style={{paddingLeft:50}}>
+                                            <RaisedButton label="Submit" primary={true} type="submit" style={{marginTop:5}} />
                                     </td>
                                 </tr>
                                 </tbody>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import QueueAnim from 'rc-queue-anim';
-import {RaisedButton, FloatingActionButton} from 'material-ui';
+import {RaisedButton, FloatingActionButton,Chip} from 'material-ui';
 import DataForm from './FormDialog';
 import {connect} from 'react-redux';
 import {getUsers,deleteUser} from '../../../../../service/user.service';
@@ -132,7 +132,7 @@ class CRUDPage extends React.Component {
                                                     </TableRowColumn>
                                                     <TableRowColumn><img src={'./assets/images/' + row.profile}
                                                                          height={100} width={100}/></TableRowColumn>
-                                                    <TableRowColumn>{row.status ? 'Active' : 'Inactive'}</TableRowColumn>
+                                                    <TableRowColumn>{row.status ? <Chip backgroundColor='#5cb85c' labelColor='white'>Active</Chip> : <Chip backgroundColor='#f86c6b' labelColor='white'>Inactive</Chip>}</TableRowColumn>
                                                     <TableRowColumn>
                                                         <div>
                                                             <FloatingActionButton mini={true} secondary={true}
