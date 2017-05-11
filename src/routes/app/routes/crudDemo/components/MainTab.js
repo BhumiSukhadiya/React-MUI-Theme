@@ -8,7 +8,8 @@ import {getUsers,deleteUser} from '../../../../../service/user.service';
 import Alert from 'react-s-alert';
 import s from './crudStyle.scss';
 
-class CRUDPage extends React.Component {
+
+class UserTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,10 +80,7 @@ class CRUDPage extends React.Component {
 
     render() {
         return (
-            <div className='container-fluid with-maxwidth'>
-                <QueueAnim type='top' className='ui-animate'>
-                    <div key='1'>
-                            <h2 className='article-title'>CRUD Example</h2>
+
                                 <div >
                                     <RaisedButton label='Insert New Record' secondary={true}
                                                   onTouchTap={this.handleDialogOpen} style={{marginBottom: 10}}/>
@@ -149,14 +147,24 @@ class CRUDPage extends React.Component {
                                         </TableBody>
                                     </Table>
                             </div>
-                    </div>
-                </QueueAnim>
-            </div>
+
         );
     }
 }
 
+const CRUDPage = (props) => {
+    return(
+        <div className='container-fluid with-maxwidth'>
+            <QueueAnim type='top' className='ui-animate'>
+                <div key='1'>
+                    <h2 className='article-title'>CRUD Example</h2>
+                    <UserTable {...props}/>
+                </div>
+            </QueueAnim>
+        </div>
 
+    )
+}
 const mapStateToProps = (state) => {
     return {
         allusers: state.user_data

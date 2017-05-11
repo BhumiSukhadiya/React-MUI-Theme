@@ -17,7 +17,7 @@ import {addNewUser, updateUser} from "../../../../../service/user.service";
 //noinspection JSUnresolvedVariable
 import _ from "lodash";
 import Alert from "react-s-alert";
-class DataForm extends React.Component {
+class UserForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -116,30 +116,9 @@ class DataForm extends React.Component {
     };
 
     render() {
-        //console.log(this.props.userData)
         let {userData}=this.props;
-        //noinspection JSUnresolvedVariable
-        const actions = [
-            <RaisedButton
-                label='Cancel'
-                primary={true}
-                onTouchTap={this.props.closeDialog}
-                style={{marginRight: 10}}
-            />
-        ];
-
-        //noinspection JSUnresolvedVariable
         return (
-            <div>
-                <Dialog
-                    title='Insert Data'
-                    actions={actions}
-                    modal={true}
-                    open={this.props.openDialog}
-                    autoScrollBodyContent={true}
-                >
-                    <div>
-                        <Divider/>
+
                         <form onSubmit={this.onSubmitForm} name='UserForm'>
                             <table>
                                 <tbody>
@@ -244,11 +223,35 @@ class DataForm extends React.Component {
                                 </tbody>
                             </table>
                         </form>
-                    </div>
-                </Dialog>
-            </div>
+
         );
     }
 }
 
+const DataForm=(props)=>{
+    const actions = [
+        <RaisedButton
+            label='Cancel'
+            primary={true}
+            onTouchTap={props.closeDialog}
+            style={{marginRight: 10}}
+        />
+    ];
+    return (
+        <div>
+            <Dialog
+                title='Insert Data'
+                actions={actions}
+                modal={true}
+                open={props.openDialog}
+                autoScrollBodyContent={true}
+            >
+                <div>
+                    <Divider/>
+                    <UserForm {...props}/>
+                </div>
+            </Dialog>
+        </div>
+    );
+}
 export default connect()(DataForm);
