@@ -6,12 +6,13 @@ import DataForm from './FormDialog';
 import {connect} from 'react-redux';
 import {getUsers,deleteUser} from '../../../../../service/user.service';
 import Alert from 'react-s-alert';
+import s from './crudStyle.scss';
 
 class CRUDPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fixedHeader: false,
+            fixedHeader: true,
             fixedFooter: true,
             stripedRows: false,
             showRowHover: false,
@@ -22,7 +23,7 @@ class CRUDPage extends React.Component {
             showCheckboxes: false,
             height: '500px',
             open: false,
-            users: null,
+            users: {},
             selectedUser: {}
         };
     }
@@ -81,12 +82,10 @@ class CRUDPage extends React.Component {
             <div className='container-fluid with-maxwidth'>
                 <QueueAnim type='top' className='ui-animate'>
                     <div key='1'>
-                        <article className='article'>
                             <h2 className='article-title'>CRUD Example</h2>
-                            <div className='row'>
-                                <div className='col-xl-11'>
+                                <div >
                                     <RaisedButton label='Insert New Record' secondary={true}
-                                                  onTouchTap={this.handleDialogOpen} style={{margin: 12}}/>
+                                                  onTouchTap={this.handleDialogOpen} style={{marginBottom: 10}}/>
                                     {this.state.open && <DataForm openDialog={this.state.open} closeDialog={this.handleClose}
                                               userData={this.state.selectedUser || {}}/>}
                                     <Table
@@ -95,6 +94,7 @@ class CRUDPage extends React.Component {
                                         fixedFooter={this.state.fixedFooter}
                                         selectable={this.state.selectable}
                                         multiSelectable={this.state.multiSelectable}
+                                        className={s.dTable}
                                     >
                                         <TableHeader
                                             displaySelectAll={this.state.showCheckboxes}
@@ -120,7 +120,7 @@ class CRUDPage extends React.Component {
                                             showRowHover={this.state.showRowHover}
                                             stripedRows={this.state.stripedRows}
                                         >
-                                            {this.state.users !== null && this.state.users.map((row, index) => (
+                                            {!_.isEmpty(this.state.users) && this.state.users.map((row, index) => (
                                                 <TableRow key={index}>
                                                     <TableRowColumn>{index + 1}</TableRowColumn>
                                                     <TableRowColumn>{row.name}</TableRowColumn>
@@ -148,9 +148,7 @@ class CRUDPage extends React.Component {
                                             ))}
                                         </TableBody>
                                     </Table>
-                                </div>
                             </div>
-                        </article>
                     </div>
                 </QueueAnim>
             </div>
