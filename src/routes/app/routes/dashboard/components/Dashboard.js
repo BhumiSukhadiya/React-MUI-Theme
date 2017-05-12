@@ -74,7 +74,6 @@ const Engagement = () => {
 }
 
 const Dashboard = (props) => {
-    console.log(props)
     return(
         <div className="container-fluid no-breadcrumbs page-dashboard">
 

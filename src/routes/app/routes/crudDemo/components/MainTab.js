@@ -1,12 +1,12 @@
-import React from 'react';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import QueueAnim from 'rc-queue-anim';
-import {RaisedButton, FloatingActionButton,Chip} from 'material-ui';
-import DataForm from './FormDialog';
-import {connect} from 'react-redux';
-import {getUsers,deleteUser} from '../../../../../service/user.service';
-import Alert from 'react-s-alert';
-import s from './crudStyle.scss';
+import React from "react";
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from "material-ui/Table";
+import QueueAnim from "rc-queue-anim";
+import {RaisedButton, FloatingActionButton, Chip} from "material-ui";
+import DataForm from "./FormDialog";
+import {connect} from "react-redux";
+import {getUsers, deleteUser} from "../../../../../service/user.service";
+import Alert from "react-s-alert";
+import s from "./crudStyle.scss";
 
 
 class UserTable extends React.Component {
@@ -29,13 +29,16 @@ class UserTable extends React.Component {
         };
     }
 
-    componentWillMount() {
+     componentWillMount() {
         this.props.dispatch(getUsers()).then(() => {
             this.setState({
                 users: this.props.allusers.users
             })
         });
 
+    }
+    componentDidMount(){
+        console.log('mainTab');
     }
 
     handleDialogOpen = () => {
@@ -59,14 +62,14 @@ class UserTable extends React.Component {
         })
     };
 
-    handleDelete=(id)=>{
-        let ans=confirm('Delete selected user?');
-        if(ans){
-            this.props.dispatch(deleteUser(id)).then((res)=>{
+    handleDelete = (id) => {
+        let ans = confirm('Delete selected user?');
+        if (ans) {
+            this.props.dispatch(deleteUser(id)).then((res) => {
                 Alert.success(res, {
                     position: 'top-right',
                     effect: 'flip',
-                    timeout:3000
+                    timeout: 3000
                 });
                 this.props.dispatch(getUsers()).then(() => {
                     this.setState({
@@ -80,80 +83,81 @@ class UserTable extends React.Component {
 
     render() {
         return (
-
-                                <div >
-                                    <RaisedButton label='Insert New Record' secondary={true}
-                                                  onTouchTap={this.handleDialogOpen} style={{marginBottom: 10}}/>
-                                    {this.state.open && <DataForm openDialog={this.state.open} closeDialog={this.handleClose}
+            <div>
+                <RaisedButton label='Insert New Record' secondary={true}
+                              onTouchTap={this.handleDialogOpen} style={{marginBottom: 10}}/>
+                {this.state.open && <DataForm openDialog={this.state.open} closeDialog={this.handleClose}
                                               userData={this.state.selectedUser || {}}/>}
-                                    <Table
-                                        height={this.state.height}
-                                        fixedHeader={this.state.fixedHeader}
-                                        fixedFooter={this.state.fixedFooter}
-                                        selectable={this.state.selectable}
-                                        multiSelectable={this.state.multiSelectable}
-                                        className={s.dTable}
-                                    >
-                                        <TableHeader
-                                            displaySelectAll={this.state.showCheckboxes}
-                                            adjustForCheckbox={this.state.showCheckboxes}
-                                            enableSelectAll={this.state.enableSelectAll}
-                                        >
-                                            <TableRow>
-                                                <TableHeaderColumn tooltip='ID'>ID</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Name'>Name</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Email Id'>Email</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Gender'>Gender</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Country'>Country</TableHeaderColumn>
-                                                <TableHeaderColumn
-                                                    tooltip='Interrested Technology'>Technology</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Profile'>Profile</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Status'>Status</TableHeaderColumn>
-                                                <TableHeaderColumn tooltip='Action'>Action</TableHeaderColumn>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody
-                                            displayRowCheckbox={this.state.showCheckboxes}
-                                            deselectOnClickaway={this.state.deselectOnClickaway}
-                                            showRowHover={this.state.showRowHover}
-                                            stripedRows={this.state.stripedRows}
-                                        >
-                                            {!_.isEmpty(this.state.users) && this.state.users.map((row, index) => (
-                                                <TableRow key={index}>
-                                                    <TableRowColumn>{index + 1}</TableRowColumn>
-                                                    <TableRowColumn>{row.name}</TableRowColumn>
-                                                    <TableRowColumn>{row.email}</TableRowColumn>
-                                                    <TableRowColumn>{row.gender}</TableRowColumn>
-                                                    <TableRowColumn>{row.country}</TableRowColumn>
-                                                    <TableRowColumn>{row.technology.map((tech, i) => (
-                                                        <div key={i}>{tech}</div>))}
-                                                    </TableRowColumn>
-                                                    <TableRowColumn><img src={'./assets/images/' + row.profile}
-                                                                         height={100} width={100}/></TableRowColumn>
-                                                    <TableRowColumn>{row.status ? <Chip backgroundColor='#5cb85c' labelColor='white'>Active</Chip> : <Chip backgroundColor='#f86c6b' labelColor='white'>Inactive</Chip>}</TableRowColumn>
-                                                    <TableRowColumn>
-                                                        <div>
-                                                            <FloatingActionButton mini={true} secondary={true}
-                                                                                  onTouchTap={() => this.handleUpdate(row)}>
-                                                                <i className='material-icons'>mode_edit</i>
-                                                            </FloatingActionButton>
-                                                            <FloatingActionButton mini={true}  onTouchTap={() => this.handleDelete(row._id)}>
-                                                                <i className='material-icons'>delete</i>
-                                                            </FloatingActionButton>
-                                                        </div>
-                                                    </TableRowColumn>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                            </div>
+                <Table
+                    height={this.state.height}
+                    fixedHeader={this.state.fixedHeader}
+                    fixedFooter={this.state.fixedFooter}
+                    selectable={this.state.selectable}
+                    multiSelectable={this.state.multiSelectable}
+                    className={s.dTable}
+                >
+                    <TableHeader
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        enableSelectAll={this.state.enableSelectAll}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn tooltip='ID'>ID</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Name'>Name</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Email Id'>Email</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Gender'>Gender</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Country'>Country</TableHeaderColumn>
+                            <TableHeaderColumn
+                                tooltip='Interrested Technology'>Technology</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Profile'>Profile</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Status'>Status</TableHeaderColumn>
+                            <TableHeaderColumn tooltip='Action'>Action</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={this.state.showCheckboxes}
+                        deselectOnClickaway={this.state.deselectOnClickaway}
+                        showRowHover={this.state.showRowHover}
+                        stripedRows={this.state.stripedRows}
+                    >
+                        {!_.isEmpty(this.state.users) && this.state.users.map((row, index) => (
+                            <TableRow key={index}>
+                                <TableRowColumn>{index + 1}</TableRowColumn>
+                                <TableRowColumn>{row.name}</TableRowColumn>
+                                <TableRowColumn>{row.email}</TableRowColumn>
+                                <TableRowColumn>{row.gender}</TableRowColumn>
+                                <TableRowColumn>{row.country}</TableRowColumn>
+                                <TableRowColumn>{row.technology.map((tech, i) => (
+                                    <div key={i}>{tech}</div>))}
+                                </TableRowColumn>
+                                <TableRowColumn><img src={'./assets/images/' + row.profile}
+                                                     height={100} width={100}/></TableRowColumn>
+                                <TableRowColumn>{row.status ?
+                                    <Chip backgroundColor='#5cb85c' labelColor='white'>Active</Chip> :
+                                    <Chip backgroundColor='#f86c6b' labelColor='white'>Inactive</Chip>}</TableRowColumn>
+                                <TableRowColumn>
+                                    <div>
+                                        <FloatingActionButton mini={true} secondary={true}
+                                                              onTouchTap={() => this.handleUpdate(row)}>
+                                            <i className='material-icons'>mode_edit</i>
+                                        </FloatingActionButton>
+                                        <FloatingActionButton mini={true} onTouchTap={() => this.handleDelete(row._id)}>
+                                            <i className='material-icons'>delete</i>
+                                        </FloatingActionButton>
+                                    </div>
+                                </TableRowColumn>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
 
         );
     }
 }
 
 const CRUDPage = (props) => {
-    return(
+    return (
         <div className='container-fluid with-maxwidth'>
             <QueueAnim type='top' className='ui-animate'>
                 <div key='1'>

@@ -23,7 +23,16 @@ import 'styles/app.scss';
 
 
 class App extends Component {
-    componentDidMount() {}
+    constructor(){
+        super();
+        this.state={
+            loading:true
+        }
+    }
+    componentDidMount() {
+        setTimeout(()=>this.setState({loading:false}),100);
+       // console.log('app');
+    }
 
     render() {
         const { layoutBoxed, navCollapsed, navBehind, fixedHeader, sidebarWidth, theme } = this.props;
@@ -37,6 +46,9 @@ class App extends Component {
                 break;
             default:
                 materialUITheme = lightTheme;
+        }
+        if(this.state.loading){
+            return <h1>loading</h1>;
         }
 
         return (
