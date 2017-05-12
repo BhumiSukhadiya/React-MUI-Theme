@@ -20,6 +20,7 @@ import 'styles/layout.scss';
 import 'styles/theme.scss';
 import 'styles/ui.scss';
 import 'styles/app.scss';
+import 'styles/loader.scss';
 
 
 class App extends Component {
@@ -30,7 +31,7 @@ class App extends Component {
         }
     }
     componentDidMount() {
-        setTimeout(()=>this.setState({loading:false}),100);
+        setTimeout(()=>this.setState({loading:false}),1000);
        // console.log('app');
     }
 
@@ -48,13 +49,16 @@ class App extends Component {
                 materialUITheme = lightTheme;
         }
         if(this.state.loading){
-            return <h1>loading</h1>;
+            return  <div className="loader">
+                <div className="inner one"></div>
+                <div className="inner two"></div>
+                <div className="inner three"></div>
+            </div>;
         }
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(materialUITheme)}>
                 <div id="app-inner">
-                    <div className="preloaderbar hide"><span className="bar"></span></div>
                     <div
                         className={classnames('full-height', {
                             'fixed-header'  : fixedHeader,
@@ -83,8 +87,6 @@ const mapStateToProps = (state, ownProps) => {
         sidebarWidth: state.settings.sidebarWidth,
         theme: state.settings.theme,
     }
-}
+};
 
-module.exports = connect(
-    mapStateToProps
-)(App);
+module.exports = connect(mapStateToProps)(App);

@@ -76,7 +76,6 @@ class WebpackBaseConfig {
             importLoaders: 1,
             localIdentName: '[name]-[local]-[hash:base64:5]'
         };
-
         return {
             context: this.srcPathAbsolute,
             devtool: 'eval',

@@ -4,6 +4,7 @@ let api_url = 'http://localhost:3001';
 export const addNewUser = (user) => {
     return (dispatch) => {
         //noinspection JSUnresolvedFunction
+
         return  axios.post(api_url + '/insertData', user)
             .then((res) => {
 
@@ -18,6 +19,7 @@ export const addNewUser = (user) => {
 export const getUsers = () => {
     return (dispatch) => {
         //noinspection JSUnresolvedFunction
+
         return axios.get(api_url + '/getData')
 
             .then((res) => {
